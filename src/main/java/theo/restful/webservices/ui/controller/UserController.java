@@ -1,7 +1,8 @@
 package theo.restful.webservices.ui.controller;
 
 import org.springframework.web.bind.annotation.*;
-import theo.restful.webservices.ui.model.response.UsersDetailsRequestModel;
+import theo.restful.webservices.ui.model.request.UsersDetailsRequestModel;
+import theo.restful.webservices.ui.model.response.UserRest;
 
 @RestController
 @RequestMapping("users")
@@ -14,8 +15,8 @@ public class UserController {
     }
 
     @PostMapping
-    public String createUser(@RequestBody UsersDetailsRequestModel userDetails){
-        return "create user was called";
+    public UserRest createUser(@RequestBody UsersDetailsRequestModel userDetails){
+        return null;
     }
 
     @PutMapping

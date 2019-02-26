@@ -1,4 +1,4 @@
-package theo.restful.webservices.ui.model.response;
+package theo.restful.webservices.ui.model.request;
 
 public class UsersDetailsRequestModel {
 
