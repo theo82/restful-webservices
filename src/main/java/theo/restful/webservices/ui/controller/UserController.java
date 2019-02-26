@@ -1,6 +1,7 @@
 package theo.restful.webservices.ui.controller;
 
 import org.springframework.web.bind.annotation.*;
+import theo.restful.webservices.ui.model.response.UsersDetailsRequestModel;
 
 @RestController
 @RequestMapping("users")
