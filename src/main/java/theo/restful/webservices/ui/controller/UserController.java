@@ -1,7 +1,9 @@
 package theo.restful.webservices.ui.controller;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import theo.restful.webservices.service.UserService;
 import theo.restful.webservices.shared.dto.UserDto;
 import theo.restful.webservices.ui.model.request.UsersDetailsRequestModel;
 import theo.restful.webservices.ui.model.response.UserRest;
@@ -9,6 +11,9 @@ import theo.restful.webservices.ui.model.response.UserRest;
 @RestController
 @RequestMapping("users")
 public class UserController {
+
+    @Autowired
+    UserService userService;
 
 
     @GetMapping
