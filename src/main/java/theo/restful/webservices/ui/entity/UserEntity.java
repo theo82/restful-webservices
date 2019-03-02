@@ -1,9 +1,6 @@
 package theo.restful.webservices.ui.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity(name="users")
@@ -12,7 +9,7 @@ public class UserEntity implements Serializable {
     private static final long serialVersionUID = 5313493413859894403L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(nullable=false)

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import theo.restful.webservices.UserRepository;
 import theo.restful.webservices.service.UserService;
+import theo.restful.webservices.shared.Utils;
 import theo.restful.webservices.shared.dto.UserDto;
 import theo.restful.webservices.ui.entity.UserEntity;
 
@@ -14,6 +15,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    Utils utils;
 
     @Override
     public UserDto createUser(UserDto user) {
@@ -24,8 +28,9 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(user,userEntity);
 
+        String publicUserId = utils.generateUserId(30);
         userEntity.setEncryptedPassword("test");
-        userEntity.setUserId("testUserId");
+        userEntity.setUserId(publicUserId);
 
         UserEntity storedUserDetails = userRepository.save(userEntity);
 
