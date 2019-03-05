@@ -9,6 +9,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import theo.restful.webservices.SpringApplicationContext;
+import theo.restful.webservices.service.UserService;
+import theo.restful.webservices.shared.dto.UserDto;
 import theo.restful.webservices.ui.model.request.UserLoginRequestModel;
 
 import javax.servlet.FilterChain;
@@ -56,7 +59,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             Authentication authResult) throws IOException, ServletException {
 
 
-        String userName = ((User) authResult.getPrincipal()).getPassword();
+        String userName = ((User) authResult.getPrincipal()).getUsername();
 
         String token = Jwts.builder()
                 .setSubject(userName)
@@ -64,7 +67,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET)
                 .compact();
 
+        UserService userService = (UserService)SpringApplicationContext.getBean("userServiceImpl");
+        UserDto userDto = userService.getUser(userName);
+
         response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+        response.addHeader("UserID", userDto.getUserId());
 
     }
 }
