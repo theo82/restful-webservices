@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import theo.restful.webservices.exceptions.UserServiceException;
 import theo.restful.webservices.service.UserService;
 import theo.restful.webservices.shared.dto.UserDto;
 import theo.restful.webservices.ui.model.request.UsersDetailsRequestModel;
@@ -40,7 +41,7 @@ public class UserController {
 
         UserRest returnValue = new UserRest();
 
-        if(userDetails.getFirstName().isEmpty()) throw new Exception(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+        if(userDetails.getFirstName().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(userDetails,userDto);
