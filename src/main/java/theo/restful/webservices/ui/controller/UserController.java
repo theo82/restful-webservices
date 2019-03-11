@@ -13,6 +13,8 @@ import theo.restful.webservices.ui.model.request.UsersDetailsRequestModel;
 import theo.restful.webservices.ui.model.response.ErrorMessages;
 import theo.restful.webservices.ui.model.response.UserRest;
 
+import javax.validation.constraints.Null;
+
 @RestController
 @RequestMapping("users")
 public class UserController {
@@ -41,7 +43,7 @@ public class UserController {
 
         UserRest returnValue = new UserRest();
 
-        if(userDetails.getFirstName().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+        if(userDetails.getFirstName().isEmpty()) throw new NullPointerException("The object is null");
 
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(userDetails,userDto);
