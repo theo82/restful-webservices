@@ -7,12 +7,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import theo.restful.webservices.exceptions.UserServiceException;
 import theo.restful.webservices.io.repositories.UserRepository;
 import theo.restful.webservices.service.UserService;
 import theo.restful.webservices.shared.Utils;
 import theo.restful.webservices.shared.dto.UserDto;
 import theo.restful.webservices.ui.entity.UserEntity;
+import theo.restful.webservices.ui.model.response.ErrorMessages;
 
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 
 @Service
@@ -71,6 +74,24 @@ public class UserServiceImpl implements UserService {
         if(userEntity == null) throw new UsernameNotFoundException(userId);
 
         BeanUtils.copyProperties(userEntity, returnValue);
+
+        return returnValue;
+    }
+
+    @Override
+    public UserDto updateUser(String userId, UserDto user) {
+
+        UserDto returnValue = new UserDto();
+        UserEntity userEntity = userRepository.findByUserId(userId);
+
+        if(userEntity == null)
+            throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+
+        userEntity.setFirstName(user.getFirstName());
+        userEntity.setLastName(user.getLastName());
+
+        UserEntity updatedUserDetails = userRepository.save(userEntity);
+        BeanUtils.copyProperties(updatedUserDetails,returnValue);
 
         return returnValue;
     }
