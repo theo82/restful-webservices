@@ -2,18 +2,14 @@ package theo.restful.webservices.ui.controller;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import theo.restful.webservices.exceptions.UserServiceException;
 import theo.restful.webservices.service.UserService;
 import theo.restful.webservices.shared.dto.UserDto;
 import theo.restful.webservices.ui.model.request.UsersDetailsRequestModel;
-import theo.restful.webservices.ui.model.response.ErrorMessages;
+import theo.restful.webservices.ui.model.response.OperationStatusModel;
+import theo.restful.webservices.ui.model.response.RequestOperationStatus;
 import theo.restful.webservices.ui.model.response.UserRest;
-
-import javax.validation.constraints.Null;
 
 @RestController
 @RequestMapping("users")
@@ -73,9 +69,19 @@ public class UserController {
         return returnValue;
     }
 
-    @DeleteMapping
-    public String deleteUser(){
-        return "delete user was called";
+    @DeleteMapping(path = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public OperationStatusModel deleteUser(@PathVariable String id){
+
+        OperationStatusModel returnValue = new OperationStatusModel();
+        returnValue.setOperationName(RequestOperationName.DELETE.name());
+
+        userService.deleteUser(id);
+
+        returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+        return returnValue;
+
     }
+
+
 
 }
