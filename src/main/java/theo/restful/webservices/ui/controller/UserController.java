@@ -11,6 +11,9 @@ import theo.restful.webservices.ui.model.response.OperationStatusModel;
 import theo.restful.webservices.ui.model.response.RequestOperationStatus;
 import theo.restful.webservices.ui.model.response.UserRest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("users")
 public class UserController {
@@ -82,6 +85,21 @@ public class UserController {
 
     }
 
+    @GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public List<UserRest> getUsers(@RequestParam(value="page", defaultValue = "1") int page,
+                                   @RequestParam(value="limit", defaultValue = "25") int limit){
 
+        List<UserRest> returnValue = new ArrayList<>();
+
+        List<UserDto> users = userService.getUsers(page,limit);
+
+        for(UserDto userDto : users){
+            UserRest userModel = new UserRest();
+            BeanUtils.copyProperties(userDto, userModel);
+            returnValue.add(userModel);
+        }
+
+        return returnValue;
+    }
 
 }
