@@ -1,11 +1,16 @@
 package theo.restful.webservices.ui.model.request;
 
+import java.util.List;
+
 public class UsersDetailsRequestModel {
 
     private String firstName;
     private String lastName;
     private String email;
     private String password;
+
+
+    private List<AddressesRequestModel> addresses;
 
     public String getFirstName() {
         return firstName;
@@ -37,5 +42,13 @@ public class UsersDetailsRequestModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<AddressesRequestModel> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<AddressesRequestModel> addresses) {
+        this.addresses = addresses;
     }
 }
