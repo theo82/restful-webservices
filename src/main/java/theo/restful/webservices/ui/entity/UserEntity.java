@@ -32,6 +32,7 @@ public class UserEntity implements Serializable {
     @Column(nullable = false)
     private Boolean emailVerificationStatus = false;
 
+    @OneToMany(mappedBy = "userDetails", cascade = CascadeType.ALL)
     private List<AddressEntity> addresses;
 
     public long getId() {
@@ -98,7 +99,6 @@ public class UserEntity implements Serializable {
         this.emailVerificationStatus = emailVerificationStatus;
     }
 
-    @OneToMany(mappedBy = "usersDetails", cascade = CascadeType.ALL)
     public List<AddressEntity> getAddresses() {
         return addresses;
     }
