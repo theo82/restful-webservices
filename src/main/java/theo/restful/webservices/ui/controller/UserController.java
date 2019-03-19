@@ -41,18 +41,21 @@ public class UserController {
     public UserRest createUser(@RequestBody UsersDetailsRequestModel userDetails) throws Exception{
 
 
-        UserRest returnValue = new UserRest();
-
-        if(userDetails.getFirstName().isEmpty()) throw new NullPointerException("The object is null");
+        //if(userDetails.getFirstName().isEmpty()) throw new NullPointerException("The object is null");
 
 //        UserDto userDto = new UserDto();
 //        BeanUtils.copyProperties(userDetails,userDto);
 
+        UserRest returnValue = new UserRest();
+
+        // UserDto userDto = new UserDto();
+        // BeanUtils.copyProperties(userDetails, userDto);
         ModelMapper modelMapper = new ModelMapper();
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
-        UserDto createUser = userService.createUser(userDto);
-        BeanUtils.copyProperties(createUser,returnValue);
+        UserDto createdUser = userService.createUser(userDto);
+        returnValue = modelMapper.map(createdUser, UserRest.class);
+
 
         return returnValue;
     }
