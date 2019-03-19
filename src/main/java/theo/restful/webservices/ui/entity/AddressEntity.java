@@ -1,15 +1,56 @@
-package theo.restful.webservices.shared.dto;
+package theo.restful.webservices.ui.entity;
 
-public class AddressDTO {
+import theo.restful.webservices.shared.dto.UserDto;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity(name="addresses")
+public class AddressEntity  implements Serializable {
+
+    private static final long serialVersionUID = 7809200551672852690L;
+
+    @Id
+    @GeneratedValue
     private long id;
+
+    @Column(length = 30, nullable=false)
     private String addressId;
+
+    @Column(length = 15, nullable=false)
     public String city;
+
+    @Column(length = 15, nullable=false)
     public String country;
+
+    @Column(length = 100, nullable=false)
     public String streetName;
+
+    @Column(length = 7, nullable=false)
     public String postalCode;
+
+    @Column(length = 10, nullable=false)
     public String type;
+
+    @ManyToOne
+    @JoinColumn(name="users_id")
     private UserDto userDetails;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
+    }
 
     public String getCity() {
         return city;
@@ -57,13 +98,5 @@ public class AddressDTO {
 
     public void setUserDetails(UserDto userDetails) {
         this.userDetails = userDetails;
-    }
-
-    public String getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(String addressId) {
-        this.addressId = addressId;
     }
 }
