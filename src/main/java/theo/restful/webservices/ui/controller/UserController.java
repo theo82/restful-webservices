@@ -1,17 +1,22 @@
 package theo.restful.webservices.ui.controller;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import theo.restful.webservices.service.AddressService;
 import theo.restful.webservices.service.UserService;
+import theo.restful.webservices.shared.dto.AddressDTO;
 import theo.restful.webservices.shared.dto.UserDto;
 import theo.restful.webservices.ui.model.request.UsersDetailsRequestModel;
+import theo.restful.webservices.ui.model.response.AddressesRest;
 import theo.restful.webservices.ui.model.response.OperationStatusModel;
 import theo.restful.webservices.ui.model.response.RequestOperationStatus;
 import theo.restful.webservices.ui.model.response.UserRest;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +26,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    AddressService addressesService;
 
 
     @GetMapping(path = "/{id}",
@@ -101,6 +109,22 @@ public class UserController {
             UserRest userModel = new UserRest();
             BeanUtils.copyProperties(userDto, userModel);
             returnValue.add(userModel);
+        }
+
+        return returnValue;
+    }
+    //http://localhost:8080/restful-webservices/users/id/addresses
+    @GetMapping(path = "/{id}/addresses",
+            produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE} )
+    public List<AddressesRest> getUserAddresses(@PathVariable String id){
+
+        List<AddressesRest> returnValue = new ArrayList<>();
+
+        List<AddressDTO> addressesDTO = addressesService.getAddresses(id);
+
+        if(addressesDTO != null && !addressesDTO.isEmpty()){
+            Type listType = new TypeToken<List<AddressesRest>>(){}.getType();
+            returnValue = new ModelMapper().map(addressesDTO, listType);
         }
 
         return returnValue;

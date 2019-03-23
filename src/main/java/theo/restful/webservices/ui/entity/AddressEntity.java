@@ -1,5 +1,7 @@
 package theo.restful.webservices.ui.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -32,6 +34,7 @@ public class AddressEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="users_id")
+    @JsonIgnore
     private UserEntity userDetails;
 
     public long getId() {
