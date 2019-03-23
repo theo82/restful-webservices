@@ -39,35 +39,34 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto user) {
 
+        if(userRepository.findByEmail(user.getEmail()) != null) throw new RuntimeException("Record already exists");
 
-        if (userRepository.findByEmail(user.getEmail()) != null)
-            throw new UserServiceException("Record already exists");
 
         for(int i=0;i<user.getAddresses().size();i++)
         {
             AddressDTO address = user.getAddresses().get(i);
             address.setUserDetails(user);
-            address.setAddressId(utils.generateAdressId(30));
+            address.setAddressId(utils.generateAddressId(30));
             user.getAddresses().set(i, address);
         }
 
-        //BeanUtils.copyProperties(user, userEntity);
+        //UserEntity userEntity = new UserEntity();
+        //BeanUtils.copyProperties(user,userEntity);
         ModelMapper modelMapper = new ModelMapper();
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
 
         String publicUserId = utils.generateUserId(30);
-        userEntity.setUserId(publicUserId);
         userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userEntity.setUserId(publicUserId);
 
         UserEntity storedUserDetails = userRepository.save(userEntity);
 
-        //BeanUtils.copyProperties(storedUserDetails, returnValue);
-        UserDto returnValue  = modelMapper.map(storedUserDetails, UserDto.class);
-
-
-
+        //UserDto returnValue = new UserDto();
+//        BeanUtils.copyProperties(storedUserDetails,returnValue);
+        UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
 
         return returnValue;
+
     }
 
     @Override
