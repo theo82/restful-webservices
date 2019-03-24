@@ -148,7 +148,7 @@ public class UserController {
     @PutMapping(path="/{userId}/addresses/{addressId}",
             consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public AddressesRest updateAddress(@PathVariable String id, @RequestBody AddressesRequestModel addressDetails){
+    public AddressesRest updateAddress(@PathVariable String userId, @PathVariable String addressId, @RequestBody AddressesRequestModel addressDetails){
 
           AddressesRest returnValue = new AddressesRest();
 
@@ -161,7 +161,7 @@ public class UserController {
           AddressDTO addressDto = new AddressDTO();
           BeanUtils.copyProperties(addressDetails, addressDto);
 
-          AddressDTO updatedAddress = addressService.updateAddress(id, addressDto);
+          AddressDTO updatedAddress = addressService.updateAddress(userId, addressId, addressDto);
           BeanUtils.copyProperties(updatedAddress,returnValue);
 
           return returnValue;

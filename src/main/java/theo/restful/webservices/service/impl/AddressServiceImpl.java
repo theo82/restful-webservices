@@ -60,7 +60,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressDTO updateAddress(String addressId, AddressDTO address) {
+    public AddressDTO updateAddress(String id, String addressId, AddressDTO address) {
 
         AddressDTO returnValue = new AddressDTO();
         AddressEntity addressEntity = addressRepository.findByAddressId(addressId);
@@ -72,7 +72,8 @@ public class AddressServiceImpl implements AddressService {
         addressEntity.setCity(address.getCity());
         addressEntity.setCountry(address.getCountry());
         addressEntity.setPostalCode(address.getPostalCode());
-        addressEntity.setStreetName(address.getType());
+        addressEntity.setStreetName(address.getStreetName());
+        addressEntity.setType(address.getType());
 
         AddressEntity updatedUserEntity = addressRepository.save(addressEntity);
         BeanUtils.copyProperties(updatedUserEntity,returnValue);
