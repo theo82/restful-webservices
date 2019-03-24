@@ -10,6 +10,7 @@ import theo.restful.webservices.service.AddressService;
 import theo.restful.webservices.service.UserService;
 import theo.restful.webservices.shared.dto.AddressDTO;
 import theo.restful.webservices.shared.dto.UserDto;
+import theo.restful.webservices.ui.model.request.AddressesRequestModel;
 import theo.restful.webservices.ui.model.request.UsersDetailsRequestModel;
 import theo.restful.webservices.ui.model.response.AddressesRest;
 import theo.restful.webservices.ui.model.response.OperationStatusModel;
@@ -144,4 +145,25 @@ public class UserController {
         return modelMapper.map(addressesDto, AddressesRest.class);
     }
 
+    @PutMapping(path="/{userId}/addresses/{addressId}",
+            consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public AddressesRest updateAddress(@PathVariable String id, @RequestBody AddressesRequestModel addressDetails){
+
+          AddressesRest returnValue = new AddressesRest();
+
+          if(addressDetails.getCity().isEmpty()
+                  || addressDetails.getCountry().isEmpty()
+                  || addressDetails.getPostalCode().isEmpty()
+                  || addressDetails.getStreetName().isEmpty()
+                  || addressDetails.getType().isEmpty()) throw new NullPointerException("The object is null");
+
+          AddressDTO addressDto = new AddressDTO();
+          BeanUtils.copyProperties(addressDetails, addressDto);
+
+          AddressDTO updatedAddress = addressService.updateAddress(id, addressDto);
+          BeanUtils.copyProperties(updatedAddress,returnValue);
+
+          return returnValue;
+    }
 }
