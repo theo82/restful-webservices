@@ -1,6 +1,9 @@
 package theo.restful.webservices.ui.model.response;
 
-public class AddressesRest {
+
+import org.springframework.hateoas.ResourceSupport;
+
+public class AddressesRest extends ResourceSupport {
 
     private String addressId;
     public String city;
