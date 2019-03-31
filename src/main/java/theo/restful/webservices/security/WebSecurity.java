@@ -57,22 +57,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
-    @GetMapping(path = "/email-verification", produces = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE})
-    public OperationStatusModel verifyEmailToken(@RequestParam(value = "token") String token) {
 
-        OperationStatusModel returnValue = new OperationStatusModel();
-        returnValue.setOperationName(RequestOperationName.VERIFY_EMAIL.name());
-
-        boolean isVerified = userService.verifyEmailToken(token);
-
-        if (isVerified) {
-            returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
-        } else {
-            returnValue.setOperationResult(RequestOperationStatus.ERROR.name());
-        }
-
-        return returnValue;
-    }
 
 }
