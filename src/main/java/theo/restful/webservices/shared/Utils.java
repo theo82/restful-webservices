@@ -2,6 +2,7 @@ package theo.restful.webservices.shared;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 import theo.restful.webservices.security.SecurityConstants;
 
@@ -40,15 +41,26 @@ public class Utils {
     public String generateAddressId(int length) {
         return generateRandomString(length);
     }
+
     private String generateRandomString(int length){
 
         StringBuilder returnValue = new StringBuilder(length);
 
-        for(int i=0; i < length; i++){
+        for(int i = 0; i < length; i++){
             returnValue.append(ALPHABET.charAt(RANDOM.nextInt(ALPHABET.length())));
         }
 
         return new String(returnValue);
 
+    }
+
+    public String generateEmailVerificationToken(String userId) {
+        String token = Jwts.builder()
+                .setSubject(userId)
+                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret())
+                .compact();
+
+        return token;
     }
 }
